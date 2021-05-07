@@ -1,41 +1,45 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { getCurrentUser } from '../redux/ducks/user';
+import { useHistory } from 'react-router-dom';
+import { setCurrentUser } from '../redux/ducks/user';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const loggedInEmail = useSelector(state => state.auth);
+  const loggedInStatus = useSelector(state => state.auth);
   const currentUser = useSelector(state => state.user);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     const getUser = async () => {
       setIsLoading(true);
       try {
-        console.log('this is loggedInEmail', loggedInEmail);
         const user = await axios.get('http://localhost:8080/user/get-user', {
           params: {
-            email: loggedInEmail.email
+            email: loggedInStatus.email
           }
         });
-        dispatch(getCurrentUser(user.data));
+        dispatch(setCurrentUser(user.data));
         setIsLoading(false);
-        console.log('this is user: ', currentUser);
       } catch (err) {
         console.error(err);
         window.alert(err?.response?.data?.errorMessage);
       }
     }
     getUser();
-  }, [currentUser.email, dispatch])
+  }, [])
 
   if (isLoading) {
     return (
       <div>loading</div>
     )
+  }
+
+  if (!loggedInStatus.loggedIn) {
+    history.push('/auth');
   }
 
   return (

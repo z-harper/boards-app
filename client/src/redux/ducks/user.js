@@ -1,5 +1,5 @@
 // Actions
-const GET_CURRENT_USER = 'getCurrentUser';
+const SET_CURRENT_USER = 'setCurrentUser';
 const CLEAR_CURRENT_USER = 'clearCurrentUser';
 
 const INITIAL_STATE = {
@@ -11,7 +11,7 @@ const INITIAL_STATE = {
 // Reducer
 export default function userReducer(state={}, action) {
   switch (action.type) {
-    case GET_CURRENT_USER:
+    case SET_CURRENT_USER:
       return {
         firstName: action.payload.firstName,
         lastName: action.payload.lastName,
@@ -25,8 +25,8 @@ export default function userReducer(state={}, action) {
 }
 
 // Action Creators
-export const getCurrentUser = (data) => ({
-  type: GET_CURRENT_USER,
+export const setCurrentUser = (data) => ({
+  type: SET_CURRENT_USER,
   payload: {
     firstName: data.firstName,
     lastName: data.lastName,
