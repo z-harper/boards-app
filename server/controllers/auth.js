@@ -45,7 +45,7 @@ export const register = async (req, res) => {
   }
 }
 
-export const login = async (req, res) => {
+export const signIn = async (req, res) => {
   try {
     const {email, password} = req.body;
     // Validation
@@ -73,3 +73,19 @@ export const login = async (req, res) => {
     res.status(500).send();
   }
 }
+
+export const logout = async (req, res) => {
+  try {
+    // If cookie can't be cleared return an empty '' one
+    res.cookie('token', '', {
+      httpOnly: true,
+      expires: new Date(0)
+    }).send();
+  } catch (err) {
+    console.error(err);
+    // internal server error
+    res.status(500).send();
+  }
+}
+
+export default router;
