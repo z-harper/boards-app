@@ -33,6 +33,8 @@ export const LogoLink = styled(NavLink)`
   cursor: pointer;
 `;
 
+export const HomeLinks = styled.div``;
+
 export const Link = styled(NavLink)`
   padding: 10px 12px;
   display: inline-flex;
@@ -41,12 +43,12 @@ export const Link = styled(NavLink)`
   color: #fff;
   font-weight: bold;
   text-decoration: none;
-  background-color: rgba(0, 118, 101, 0.4);
+  background: ${props => props.color ? props.color : 'rgba(0, 118, 101, 0.4)'};
   border-radius: 32px;
   cursor: pointer;
   transition: 0.2s ease-in-out;
 
   &:hover {
-    background-color: rgba(0, 118, 101, 0.6);
+    background: ${props => props.hover ? props.hover : 'rgba(0, 118, 101, 0.6)'};
   }
 `;

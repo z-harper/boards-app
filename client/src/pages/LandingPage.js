@@ -4,7 +4,7 @@ import Hero from '../components/Hero';
 const LandingPage = () => {
   return (
     <>
-      <Navbar />
+      <Navbar fromLoc={'landing-page'} />
       <Hero />
     </>
   )

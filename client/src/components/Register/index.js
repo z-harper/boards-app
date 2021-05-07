@@ -1,32 +1,40 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { signInUser } from '../../redux/ducks/auth';
 import axios from 'axios';
 import ReactTooltip from "react-tooltip";
 import { FaRegQuestionCircle } from 'react-icons/fa';
 import * as S from './Register.styled';
 
-const Register = () => {
-  const [register, setRegister] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    passwordVerify: '',
-  })
+const INITIAL_STATE = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  password: '',
+  passwordVerify: '',
+}
 
-  //const {getLoggedIn} = useContext(AuthContext);
+const Register = () => {
+  const [register, setRegister] = useState(INITIAL_STATE);
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const key = e.target.name;
     const value = e.target.value;
-    setRegister({...register, [key]:value})
+    setRegister({...register, [key]:value});
   }
 
   const registerUser = async () => {
     try {
-      //await axios.post('http://localhost:5000/auth', register);
-      //await getLoggedIn();
+      await axios.post('http://localhost:8080/auth/register', register);
+      const user = await axios.get('http://localhost:8080/user/get-user', {
+        params: {
+          email: register.email
+        }
+      });
+      dispatch(signInUser(user.data));
       history.push('/home');  // returns us to home page
     } catch (err) {
       console.error(err);
@@ -37,14 +45,9 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     registerUser();
-    setRegister({
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      passwordVerify: '',
-    })
+    setRegister(INITIAL_STATE);
   }
+
   return (
     <S.Register>
       <S.Fieldset>

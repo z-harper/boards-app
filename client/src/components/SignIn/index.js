@@ -1,12 +1,19 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { signInUser } from '../../redux/ducks/auth';
 import axios from 'axios';
 import * as S from './SignIn.styled';
 
+const INITIAL_STATE = {
+  email: '', 
+  password: '',
+}
+
 const SignIn = () => {
-  const [signIn, setSignIn] = useState({email: '', password: '',})
+  const [signIn, setSignIn] = useState(INITIAL_STATE);
+  const dispatch = useDispatch();
   const history = useHistory();
-  //const {getLoggedIn} = useContext(AuthContext);
 
   const handleChange = (e) => {
     const key = e.target.name;
@@ -14,21 +21,26 @@ const SignIn = () => {
     setSignIn({...signIn, [key]:value})
   }
 
-  const signInUser = async () => {
+  const authenticateUser = async () => {
     try {
-      //await axios.post('http://localhost:5000/auth/sign-in', signIn);
-      //await getLoggedIn();
+      await axios.post('http://localhost:8080/auth/sign-in', signIn);
+      const user = await axios.get('http://localhost:8080/user/get-user', {
+        params: {
+          email: signIn.email
+        }
+      });
+      dispatch(signInUser(user.data));
       history.push('/home');
     } catch (err) {
       console.error(err);
-      window.alert(err.response.data.errorMessage);
+      window.alert(err?.response?.data?.errorMessage);
     }
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    signInUser();
-    setSignIn({email: '', password: '',})
+    authenticateUser();
+    setSignIn(INITIAL_STATE)
   }
 
   return (
