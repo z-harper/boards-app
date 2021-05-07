@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import authRoutes from './routes/auth.js';
+import userRoutes from './routes/user.js';
 
 dotenv.config();
 const app = express();
@@ -26,3 +27,4 @@ mongoose.connect(MDB_CONNECT_URL, { useNewUrlParser: true, useUnifiedTopology: t
 
 // Routes 
 app.use('/auth', authRoutes);
+app.use('/user', userRoutes);
