@@ -24,12 +24,8 @@ const SignIn = () => {
   const authenticateUser = async () => {
     try {
       await axios.post('http://localhost:8080/auth/sign-in', signIn);
-      const user = await axios.get('http://localhost:8080/user/get-user', {
-        params: {
-          email: signIn.email
-        }
-      });
-      dispatch(signInUser(user.data));
+      dispatch(signInUser(signIn.email));
+      setSignIn(INITIAL_STATE);
       history.push('/home');
     } catch (err) {
       console.error(err);
@@ -40,7 +36,6 @@ const SignIn = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     authenticateUser();
-    setSignIn(INITIAL_STATE)
   }
 
   return (

@@ -29,13 +29,9 @@ const Register = () => {
   const registerUser = async () => {
     try {
       await axios.post('http://localhost:8080/auth/register', register);
-      const user = await axios.get('http://localhost:8080/user/get-user', {
-        params: {
-          email: register.email
-        }
-      });
-      dispatch(signInUser(user.data));
-      history.push('/home');  // returns us to home page
+      dispatch(signInUser(register.email));
+      setRegister(INITIAL_STATE);
+      history.push('/home');  
     } catch (err) {
       console.error(err);
       window.alert(err.response.data.errorMessage);
@@ -45,7 +41,6 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     registerUser();
-    setRegister(INITIAL_STATE);
   }
 
   return (

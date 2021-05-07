@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logoutUser } from '../../redux/ducks/auth';
+import { clearCurrentUser } from '../../redux/ducks/user';
 import styled from 'styled-components';
 
 const LogoutBtn = () => {
@@ -11,6 +12,7 @@ const LogoutBtn = () => {
   const logout = async () => {
     await axios.get('http://localhost:8080/auth/logout');
     dispatch(logoutUser());
+    dispatch(clearCurrentUser());
     history.push('/');
   }
 
