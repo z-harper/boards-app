@@ -4,16 +4,16 @@ import { NavLink } from 'react-router-dom';
 export const Navbar = styled.div`
   height: 80px;
   padding: 0 1rem;
-  position: sticky;
-  top: 0;
-  z-index: 5;
+  // position: sticky;
+  // top: 0;
+  // z-index: 5;
   background: rgba(0, 118, 101, 0.2);
   box-shadow: 0 4px 2px -2px rgba(0, 118, 101, 0.2);
 `;
 
 export const Wrapper = styled.div`
   width: 100%;
-  max-width: 1200px;
+  max-width: 1100px;
   height: 100%;
   margin: auto;
   display: flex;

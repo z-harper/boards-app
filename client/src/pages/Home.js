@@ -5,11 +5,12 @@ import { useHistory } from 'react-router-dom';
 import { setCurrentUser } from '../redux/ducks/user';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
+import HomeHero from '../components/HomeHero';
+import RecentBoards from '../components/RecentBoards';
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const loggedInStatus = useSelector(state => state.auth);
-  const currentUser = useSelector(state => state.user);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -43,13 +44,11 @@ const Home = () => {
   }
 
   return (
-    <div>
+    <>
       <Navbar fromLoc={'home-page'} />
-      hello in home
-      <h3>{currentUser.firstName}</h3>
-      <h3>{currentUser.lastName}</h3>
-      <h3>{currentUser.email}</h3>
-    </div>
+      <HomeHero />
+      <RecentBoards />
+    </>
   )
 }
 
