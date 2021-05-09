@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { setCurrentUser } from '../redux/ducks/user';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
+import HomeNav from '../components/HomeNav';
 import HomeHero from '../components/HomeHero';
 import RecentBoards from '../components/RecentBoards';
 
@@ -46,6 +47,7 @@ const Home = () => {
   return (
     <>
       <Navbar fromLoc={'home-page'} />
+      <HomeNav />
       <HomeHero />
       <RecentBoards />
     </>

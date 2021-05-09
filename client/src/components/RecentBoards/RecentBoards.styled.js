@@ -40,6 +40,7 @@ export const MyBoardsLink = styled(Link)`
   font-family: cursive;
   font-weight: bold;
   text-decoration: none;
+  text-align: center;
   border: 1px solid #007665;
   border-radius: 32px;
   transition: 0.2s ease-in-out;
@@ -70,6 +71,11 @@ export const BoardsContainer = styled.ul`
 
   @media screen and ${breakpoints.device.sm} {
     grid-template-columns: 1fr;
+    margin: 0 3rem;
+  }
+
+  @media screen and ${breakpoints.device.xs} {
+    margin: 0;
   }
 `;
 
@@ -77,7 +83,7 @@ export const Board = styled.li`
   background: #007665;
   border: 4px solid #bd9748;
   border-radius: 10px;
-  height: 100px;
+  min-height: 100px;
 `;
 
 export const BoardLink = styled(Link)`
