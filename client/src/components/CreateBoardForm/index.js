@@ -1,0 +1,78 @@
+import { useState } from 'react';
+
+import * as S from './CreateBoardForm.styled';
+
+const INITIAL_STATE = {
+  name: '', 
+  textDesc: '',
+  imgUpload: '',
+  addToProject: [],
+  inviteFriends: [],
+  inviteGroup: [],
+}
+
+const CreateBoardForm = () => {
+  const [boardAttribs, setBoardAttribs] = useState(INITIAL_STATE);
+
+  const handleChange = (e) => {
+    const key = e.target.name;
+    const value = e.target.value;
+    if (key !== 'imgUpload') {
+      setBoardAttribs({...boardAttribs, [key]:value});
+    } else {
+      setBoardAttribs({...boardAttribs, imgUpload: e.target.files[0]});
+    }
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(boardAttribs);
+    setBoardAttribs(INITIAL_STATE);
+  }
+
+  return (
+    <S.CreateBoardForm>
+      <S.Wrapper>
+        <S.Form onSubmit={handleSubmit}>
+          <S.Fieldset>
+            <S.Legend>Create a Board</S.Legend>
+            <S.FormContent>
+              <S.FormItem>
+                <S.Label htmlFor='name'>Board Name</S.Label>
+                <S.Input type='text' name='name' id='name' aria-label='Board Name' placeholder='Name' value={boardAttribs.email} onChange={handleChange} />
+              </S.FormItem>
+              <S.FormItem>
+                <S.Label htmlFor='text-desc'>Board Description</S.Label>
+                <S.TextArea type='text' rows='5' name='textDesc' id='textDesc' aria-label='Text Description' placeholder='Description' value={boardAttribs.email} onChange={handleChange} />
+              </S.FormItem>
+              <S.FormItem>
+                <S.Label htmlFor='image-upload'>Upload an Image</S.Label>
+                <S.Input type='file' name='imgUpload' id='imgUpload' accept='image/*' aria-label='Upload an Image' onChange={handleChange} />
+              </S.FormItem>
+              <S.FormItem>
+                <S.Label htmlfor='add-to-project'>Add board to a project?</S.Label>
+                <S.Input type='text' name='addToProject' id='addToProject' aria-label='Add to Project' placeholder='create dropdown with users groups' />
+              </S.FormItem>
+              <S.FormItem>
+                <S.Label htmlfor='invite-friends'>Invite friend(s) to board?</S.Label>
+                <S.Input type='text' name='inviteFriends' id='inviteFriends' aria-label='Invite Friends' placeholder='create search with friends' />
+              </S.FormItem>
+              <S.FormItem>
+                <S.Label htmlfor='invite-group'>Invite group(s) to board?</S.Label>
+                <S.Input type='text' name='inviteGroup' id='inviteGroup' aria-label='Invite Group' placeholder='create checkbox with groups' />
+              </S.FormItem>
+              <S.BtnContainer>
+                <S.SubmitBtn type='submit'>Create Board</S.SubmitBtn>
+              </S.BtnContainer>
+            </S.FormContent>
+            <S.Invited>placeholder for added projects</S.Invited>
+            <S.Invited>placeholder for added friends</S.Invited>
+            <S.Invited>placeholder for added groups</S.Invited>
+          </S.Fieldset>
+        </S.Form>
+      </S.Wrapper>
+    </S.CreateBoardForm>
+  )
+}
+
+export default CreateBoardForm

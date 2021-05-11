@@ -4,6 +4,7 @@ import ProtectedRoute from '../ProtectedRoute';
 import Auth from '../../pages/Auth';
 import Home from '../../pages/Home';
 import Board from '../../pages/Board';
+import CreateBoard from '../../pages/CreateBoard';
 
 const AppRouting = () => {
   return (
@@ -14,6 +15,7 @@ const AppRouting = () => {
         <ProtectedRoute path='/home'><Home /></ProtectedRoute>
         {/* <Route path='/home' component={Home} /> */}
         <Route path='/board/:id' component={Board} />
+        <Route path='/create/board' component={CreateBoard} />
       </Switch>
     </Router>
   )

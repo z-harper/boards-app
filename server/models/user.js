@@ -25,7 +25,15 @@ const userSchema = mongoose.Schema({
     type: Date,
     default: new Date()
   },
+  friends: {
+    type: Array,
+    default: []
+  },
   boards: {
+    type: Array,
+    default: []
+  },
+  projects: {
     type: Array,
     default: []
   },
