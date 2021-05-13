@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 import * as S from './HomeNav.styled';
 import { data } from './HomeNav.data';
@@ -8,13 +9,12 @@ const HomeNav = () => {
   const [searchEmail, setSearchEmail] = useState('');
   const [isEmailFound, setIsEmailFound] = useState(false);
   const [foundUser, setFoundUser] = useState({});
+  const currentUser = useSelector(state => state.user);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const result = await axios.get(`http://localhost:8080/user/search-email?email=${searchEmail}`);
-      console.log(result);
       if (result.data.errorMessage) {
         window.alert('email not found');
       } else {
@@ -22,6 +22,21 @@ const HomeNav = () => {
         setSearchEmail('');
         setFoundUser(result.data);
       }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const handleClose = () => {
+    setTogglePopup(!togglePopup); 
+    setSearchEmail(''); 
+    setFoundUser({});
+  }
+
+  const addFriend = async () => {
+    try {
+      const result = await axios.post('http://localhost:8080/user/add-friend', {user: currentUser.email, friend: foundUser});
+      console.log(result);
     } catch (err) {
       console.log(err);
     }
@@ -53,19 +68,19 @@ const HomeNav = () => {
                 <S.SearchButton type='submit'>Search</S.SearchButton>
               </S.PopupForm>
               <S.PopupCloseBtnWrap>
-                <S.PopupCloseBtn onClick={() => {setTogglePopup(!togglePopup); setSearchEmail('');}}>Close</S.PopupCloseBtn>
+                <S.PopupCloseBtn onClick={() => handleClose()}>Close</S.PopupCloseBtn>
               </S.PopupCloseBtnWrap>
               {isEmailFound && 
                 <S.PopupEmailFound>
                   <S.popupFoundMsg>User found!</S.popupFoundMsg>
                   <S.PopupFoundWrapper>
                     <S.PopupFoundDetails>
-                      <S.PopupFoundItem><span style={{color: '#326f91', textDecoration: 'underline'}}>Email:</span> {foundUser.email}</S.PopupFoundItem>
-                      <S.PopupFoundItem><span style={{color: '#326f91', textDecoration: 'underline'}}>First:</span> {foundUser.firstName}</S.PopupFoundItem>
-                      <S.PopupFoundItem><span style={{color: '#326f91', textDecoration: 'underline'}}>Last:</span> {foundUser.lastName}</S.PopupFoundItem>
+                      <S.PopupFoundItem><span style={{color: '#999'}}>Email:</span> {foundUser.email}</S.PopupFoundItem>
+                      <S.PopupFoundItem><span style={{color: '#999'}}>First:</span> {foundUser.firstName}</S.PopupFoundItem>
+                      <S.PopupFoundItem><span style={{color: '#999'}}>Last:</span> {foundUser.lastName}</S.PopupFoundItem>
                     </S.PopupFoundDetails>
                     <S.PopupAddBtnWrap>
-                      <S.PopupAddBtn>Add Friend</S.PopupAddBtn>
+                      <S.PopupAddBtn onClick={() => addFriend()}>Add Friend</S.PopupAddBtn>
                     </S.PopupAddBtnWrap>
                   </S.PopupFoundWrapper>
                 </S.PopupEmailFound>

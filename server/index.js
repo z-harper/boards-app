@@ -20,6 +20,10 @@ app.use(cors({
   credentials: true  
 }));
 
+// Make Mongoose use `findOneAndUpdate()`. Note that this option is `true`
+// by default, you need to set it to false.
+mongoose.set('useFindAndModify', false);
+
 // Connect to Mongo. If successful, connect to server
 mongoose.connect(MDB_CONNECT_URL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => app.listen(PORT, () => console.log(`Connected to DB. Server running on port: ${PORT}`)))

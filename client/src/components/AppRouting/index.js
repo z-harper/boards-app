@@ -5,6 +5,7 @@ import Auth from '../../pages/Auth';
 import Home from '../../pages/Home';
 import Board from '../../pages/Board';
 import CreateBoard from '../../pages/CreateBoard';
+import Friends from '../../pages/Friends';
 
 const AppRouting = () => {
   return (
@@ -12,10 +13,11 @@ const AppRouting = () => {
       <Switch>          
         <Route path='/' exact component={LandingPage} />
         <Route path='/auth' component={Auth} />
-        <ProtectedRoute path='/home'><Home /></ProtectedRoute>
+        <ProtectedRoute path='/home' exact><Home /></ProtectedRoute>
         {/* <Route path='/home' component={Home} /> */}
         <Route path='/board/:id' component={Board} />
         <Route path='/create/board' component={CreateBoard} />
+        <Route path='/home/friends' exact component={Friends} />
       </Switch>
     </Router>
   )

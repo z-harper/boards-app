@@ -58,8 +58,7 @@ export const Popup = styled.div`
   top: 0;
   left: 0;
   z-index: 5;
-  background: #fff;
-  // opacity: 0.8;
+  background: rgba(255,255,255,0.6);
 `;
 
 export const PopupWrapper = styled.div`
@@ -74,6 +73,7 @@ export const PopupWrapper = styled.div`
   justify-content: center;
   border: 1px solid #007665;
   border-radius: 12px;
+  background: #fff;
 
   @media screen and ${breakpoints.device.xs} {
     width: 90%;
@@ -90,6 +90,7 @@ export const PopupTitle = styled.h1`
 
 export const AddFriends = styled.li`
   padding: 4px 8px;
+  margin: 0 0.5rem;
   font-size: 18px;
   color: #007665;
   text-decoration: none;

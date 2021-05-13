@@ -10,7 +10,8 @@ export const getUser = async (req, res) => {
     res.json({
       firstName: user.firstName, 
       lastName: user.lastName,
-      email: user.email
+      email: user.email,
+      friends: user?.friends
     })
   } catch (err) {
     console.error(err);
@@ -32,7 +33,34 @@ export const searchEmail = async (req, res) => {
       email: searchResult.email
     })
   } catch (err) {
-    console.err(err);
+    console.log(err);
+    res.status(500).send();
+  }
+}
+
+export const addFriend = async (req, res) => {
+  try {
+    const {user, friend} = req.body;
+    // Get user info from db with password
+    const userInfo = await User.findOne({ email: user });
+    // check if email already in friends list 
+    if (userInfo.friends.some(currentFriend => currentFriend.email === friend.email))
+      return res.json({ errorMessage: 'Email already in friends list.' });
+    // make a copy of user's friends array and add new entry
+    let currentFriends = [...userInfo.friends, friend];
+    // update the user's friends list with the new email
+    const updatedUser = await User.findOneAndUpdate(
+      { email: user }, 
+      {friends: currentFriends},
+      {
+        new: true,
+        upsert: true // Make this update into an upsert);
+      }
+    )
+    // send back updated friends list
+    res.json(updatedUser.friends);
+  } catch (err) {
+    console.log(err);
     res.status(500).send();
   }
 }

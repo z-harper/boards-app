@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import Dropdown from '../Dropdown';
 
 import * as S from './CreateBoardForm.styled';
 
@@ -13,6 +15,7 @@ const INITIAL_STATE = {
 
 const CreateBoardForm = () => {
   const [boardAttribs, setBoardAttribs] = useState(INITIAL_STATE);
+  const user = useSelector(state => state.user);
 
   const handleChange = (e) => {
     const key = e.target.name;
@@ -28,6 +31,11 @@ const CreateBoardForm = () => {
     e.preventDefault();
     console.log(boardAttribs);
     setBoardAttribs(INITIAL_STATE);
+  }
+
+  // add friends from friends dropdown
+  const addItems = (items) => {
+    setBoardAttribs({inviteFriends: items});
   }
 
   return (
@@ -55,7 +63,7 @@ const CreateBoardForm = () => {
               </S.FormItem>
               <S.FormItem>
                 <S.Label htmlfor='invite-friends'>Invite friend(s) to board?</S.Label>
-                <S.Input type='text' name='inviteFriends' id='inviteFriends' aria-label='Invite Friends' placeholder='create search with friends' />
+                <Dropdown title='Search friends...' mapKey={'email'} sortProperty={'lastName'} data={user.friends} addItems={addItems} />
               </S.FormItem>
               <S.FormItem>
                 <S.Label htmlfor='invite-group'>Invite group(s) to board?</S.Label>
@@ -65,9 +73,6 @@ const CreateBoardForm = () => {
                 <S.SubmitBtn type='submit'>Create Board</S.SubmitBtn>
               </S.BtnContainer>
             </S.FormContent>
-            <S.Invited>placeholder for added projects</S.Invited>
-            <S.Invited>placeholder for added friends</S.Invited>
-            <S.Invited>placeholder for added groups</S.Invited>
           </S.Fieldset>
         </S.Form>
       </S.Wrapper>
