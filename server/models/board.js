@@ -15,14 +15,6 @@ const boardSchema = mongoose.Schema({
   imgUrl: {
     type: String
   },
-  createdAt: {
-    type: Date,
-    default: new Date()
-  },
-  lastActive: {
-    type: Date,
-    default: new Date()
-  },
   members: {
     type: Array,
     default: []
@@ -34,6 +26,18 @@ const boardSchema = mongoose.Schema({
   groups: {
     type: Array,
     default: []
+  },
+  posts: {
+    type: Array,
+    default: []
+  },
+  createdAt: {
+    type: Date,
+    default: new Date()
+  },
+  lastActive: {
+    type: Date,
+    default: new Date()
   }
 })
 

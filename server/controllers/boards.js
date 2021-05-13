@@ -1,5 +1,6 @@
 import express from 'express';
 import Board from '../models/board.js';
+import User from '../models/user.js';
 
 const router = express.Router();
 
@@ -10,18 +11,43 @@ export const createBoard = async (req, res) => {
       return res
         .status(400)
         .json({ errorMessage: 'Please enter a name for the Board.' });
+    // combine creator and friends emails into one array
+    const members = [...inviteFriends.map(friend => friend.email), creator];
     const newBoard = new Board({ 
       name, 
       creator,
       textDesc,
       imgUrl: imgUpload,
-      members: [...inviteFriends.map(friend => friend.email), creator],
+      members,
       projects: addToProjects,
       groups: inviteGroups,
     });
-    res.json(newBoard);
     // Save new board to DB
     const savedBoard = await newBoard.save();
+    // save a reference to board in each member document
+    for (const memberEmail of members) {
+      const member = await User.findOne({ email: memberEmail });
+      let currentBoards = [
+        ...member.boards, 
+        {
+          boardName: savedBoard.name, 
+          lastActive: savedBoard.lastActive,
+          boardId: savedBoard._id,
+          isCreator: memberEmail === creator,
+        }
+      ];
+      // update the user's boards list with the new board
+      await User.findOneAndUpdate(
+        { email: memberEmail }, 
+        {boards: currentBoards},
+        {
+          new: true,
+          upsert: true // Make this update into an upsert);
+        }
+      );
+    }
+    // return the new board 
+    res.json(savedBoard);
   } catch (err) {
     console.error(err);
     res.status(500).send();
