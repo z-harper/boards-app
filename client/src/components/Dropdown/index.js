@@ -3,7 +3,7 @@ import * as S from './Dropdown.styled';
 import { FaAngleUp, FaAngleDown } from 'react-icons/fa';
 
 
-const Dropdown = ({title, mapKey, sortProperty, data=[], addItems}) => {
+const Dropdown = ({dropdownName, title, mapKey, sortProperty, data=[], addItems}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selection, setSelection] = useState([]);
   const [searchInput, setSearchInput] = useState('');
@@ -15,11 +15,11 @@ const Dropdown = ({title, mapKey, sortProperty, data=[], addItems}) => {
       let selectionAfterRemoval = selection;
       selectionAfterRemoval = selectionAfterRemoval.filter(el => el.email !== item.email);
       setSelection([...selectionAfterRemoval]);
-      addItems(selectionAfterRemoval);
+      addItems({dropdownName, updatedItems: selectionAfterRemoval});
     } else {
       // if item doesn't exist, add it to selection
       setSelection([...selection, item]);
-      addItems([...selection, item]);
+      addItems({dropdownName, updatedItems: [...selection, item]});
     }
   }
 

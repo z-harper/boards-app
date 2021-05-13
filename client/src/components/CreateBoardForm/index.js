@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 import Dropdown from '../Dropdown';
 
 import * as S from './CreateBoardForm.styled';
@@ -27,15 +28,38 @@ const CreateBoardForm = () => {
     }
   }
 
-  const handleSubmit = (e) => {
+  const getS3Url = async () => {
+    try {
+      // get secure s3 url from server
+      const result = await axios.get("http://localhost:8080/s3/get-url");
+      let uploadUrl = result.data.s3Url;
+      // post image to s3 using generated url from our server
+      console.log(boardAttribs.imgUpload);
+      const anotherResult = await axios.put(uploadUrl, boardAttribs.imgUpload, {headers: {'Content-Type': 'imageFile.type'}});
+      console.log(anotherResult);
+      // break url at ? to only return url + 32char hex string
+      return uploadUrl.split('?')[0];
+    } catch (err) {
+      console.log('failed to upload to s3', err);
+    }
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(boardAttribs);
+    try {
+      const uploadUrl = await getS3Url();
+      console.log(uploadUrl);
+    } catch (err) {
+      console.log(err);
+    }
+
+    // console.log(boardAttribs);
     setBoardAttribs(INITIAL_STATE);
   }
 
-  // add friends from friends dropdown
-  const addItems = (items) => {
-    setBoardAttribs({inviteFriends: items});
+  // add friends, projects, or groups from friends dropdown
+  const addItems = ({dropdownName, updatedItems}) => {
+    setBoardAttribs({...boardAttribs, [dropdownName]: updatedItems});
   }
 
   return (
@@ -58,12 +82,12 @@ const CreateBoardForm = () => {
                 <S.Input type='file' name='imgUpload' id='imgUpload' accept='image/*' aria-label='Upload an Image' onChange={handleChange} />
               </S.FormItem>
               <S.FormItem>
-                <S.Label htmlfor='add-to-project'>Add board to a project?</S.Label>
-                <S.Input type='text' name='addToProject' id='addToProject' aria-label='Add to Project' placeholder='create dropdown with users groups' />
+                <S.Label htmlfor='invite-friends'>Invite friend(s) to board?</S.Label>
+                <Dropdown dropdownName={'inviteFriends'} title='Search friends...' mapKey={'email'} sortProperty={'lastName'} data={user.friends} addItems={addItems} />
               </S.FormItem>
               <S.FormItem>
-                <S.Label htmlfor='invite-friends'>Invite friend(s) to board?</S.Label>
-                <Dropdown title='Search friends...' mapKey={'email'} sortProperty={'lastName'} data={user.friends} addItems={addItems} />
+                <S.Label htmlfor='add-to-project'>Add board to a project?</S.Label>
+                <S.Input type='text' name='addToProject' id='addToProject' aria-label='Add to Project' placeholder='create dropdown with users groups' />
               </S.FormItem>
               <S.FormItem>
                 <S.Label htmlfor='invite-group'>Invite group(s) to board?</S.Label>
