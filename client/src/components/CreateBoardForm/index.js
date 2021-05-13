@@ -9,9 +9,9 @@ const INITIAL_STATE = {
   name: '', 
   textDesc: '',
   imgUpload: '',
-  addToProject: [],
+  addToProjects: [],
   inviteFriends: [],
-  inviteGroup: [],
+  inviteGroups: [],
 }
 
 const CreateBoardForm = () => {
@@ -28,15 +28,18 @@ const CreateBoardForm = () => {
     }
   }
 
-  const getS3Url = async () => {
+  // add friends, projects, or groups from dropdowns
+  const addItems = ({dropdownName, updatedItems}) => {
+    setBoardAttribs({...boardAttribs, [dropdownName]: updatedItems});
+  }
+
+  const uploadToS3 = async () => {
     try {
       // get secure s3 url from server
       const result = await axios.get("http://localhost:8080/s3/get-url");
       let uploadUrl = result.data.s3Url;
       // post image to s3 using generated url from our server
-      console.log(boardAttribs.imgUpload);
-      const anotherResult = await axios.put(uploadUrl, boardAttribs.imgUpload, {headers: {'Content-Type': 'imageFile.type'}});
-      console.log(anotherResult);
+      await axios.put(uploadUrl, boardAttribs.imgUpload, {headers: {'Content-Type': 'imageFile.type'}});
       // break url at ? to only return url + 32char hex string
       return uploadUrl.split('?')[0];
     } catch (err) {
@@ -47,20 +50,17 @@ const CreateBoardForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const uploadUrl = await getS3Url();
-      console.log(uploadUrl);
+      const uploadUrl = await uploadToS3();
+      // send board creation contents to board api
+      console.log({...boardAttribs, imgUpload: uploadUrl, creator: user.email});
+      await axios.post('http://localhost:8080/boards/create', {...boardAttribs, imgUpload: uploadUrl, creator: user.email});
+      //setBoardAttribs(INITIAL_STATE);
+      // redirect to homepage on successful creation of board
     } catch (err) {
       console.log(err);
-    }
-
-    // console.log(boardAttribs);
-    setBoardAttribs(INITIAL_STATE);
+    }    
   }
 
-  // add friends, projects, or groups from friends dropdown
-  const addItems = ({dropdownName, updatedItems}) => {
-    setBoardAttribs({...boardAttribs, [dropdownName]: updatedItems});
-  }
 
   return (
     <S.CreateBoardForm>
@@ -87,11 +87,11 @@ const CreateBoardForm = () => {
               </S.FormItem>
               <S.FormItem>
                 <S.Label htmlfor='add-to-project'>Add board to a project?</S.Label>
-                <S.Input type='text' name='addToProject' id='addToProject' aria-label='Add to Project' placeholder='create dropdown with users groups' />
+                <S.Input type='text' name='addToProjects' id='addToProjects' aria-label='Add to Project' placeholder='create dropdown with users groups' />
               </S.FormItem>
               <S.FormItem>
                 <S.Label htmlfor='invite-group'>Invite group(s) to board?</S.Label>
-                <S.Input type='text' name='inviteGroup' id='inviteGroup' aria-label='Invite Group' placeholder='create checkbox with groups' />
+                <S.Input type='text' name='inviteGroups' id='inviteGroups' aria-label='Invite Group' placeholder='create checkbox with groups' />
               </S.FormItem>
               <S.BtnContainer>
                 <S.SubmitBtn type='submit'>Create Board</S.SubmitBtn>
