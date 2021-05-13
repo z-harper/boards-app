@@ -29,7 +29,7 @@ const HomeHero = () => {
           {data.links.map(navLink => {
             return (
               <S.LinkItem key={navLink.linkTo}>
-                <S.Link exact to={navLink.linkTo}>
+                <S.Link to={navLink.linkTo}>
                   <S.IconWrapper>{navLink.icon}</S.IconWrapper>
                   {navLink.displayAs}
                 </S.Link>

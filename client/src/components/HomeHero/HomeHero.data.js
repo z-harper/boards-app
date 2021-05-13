@@ -5,17 +5,17 @@ const style = { color: '#d2a850', fontSize: '3rem' }
 const navLinks = [
   {
     displayAs: 'My Projects',
-    linkTo: '/projects',
+    linkTo: '/home/projects',
     icon: <FaLayerGroup style={style} />,
   },
   {
     displayAs: 'My Groups',
-    linkTo: '/groups',
+    linkTo: '/home/groups',
     icon: <FaRegObjectGroup style={style} />,
   },
   {
     displayAs: 'My Friends',
-    linkTo: '/friends',
+    linkTo: '/home/friends',
     icon: <FaUserFriends style={style} />,
   },
 ]
