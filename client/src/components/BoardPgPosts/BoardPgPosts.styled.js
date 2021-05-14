@@ -24,11 +24,10 @@ export const PostHeader = styled.header`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  margin-bottom: 1rem;
 `;
 
-export const AuthorDetails = styled.div`
-  //margin-bottom: 1rem;
-`;
+export const AuthorDetails = styled.div``;
 
 export const PostAuthor = styled.a`
   color: #d2a850;
@@ -56,8 +55,6 @@ export const MinimizeBtnWrap = styled.span`
     background: rgba(0,118,101,1);
   }
 `;
-
-export const PostContent = styled.div``;
 
 export const PostImgWrap = styled.div`
   max-width: 700px; 
@@ -90,6 +87,5 @@ export const PostImg = styled.img`
 `;
 
 export const PostText = styled.p`
-  margin-top: 1rem;
   line-height: 24px;
 `;
