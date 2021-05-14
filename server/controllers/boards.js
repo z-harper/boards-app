@@ -54,4 +54,17 @@ export const createBoard = async (req, res) => {
   }
 }
 
+export const getBoard = async (req, res) => {
+  try {
+    const { boardId } = req.query;
+    const board = await Board.findOne({ _id: boardId });
+    if (!board)
+      return res.json({ errorMessage: 'Board not found.' });
+    res.json(board);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send();
+  }
+}
+
 export default router;

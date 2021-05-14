@@ -7,6 +7,7 @@ const INITIAL_STATE = {
   lastName: '',
   email: '',
   friends: [],
+  boards: [],
 }
 
 // Reducer
@@ -17,7 +18,8 @@ export default function userReducer(state={}, action) {
         firstName: action.payload.firstName,
         lastName: action.payload.lastName,
         email: action.payload.email,
-        friends: action.payload.friends
+        friends: action.payload.friends,
+        boards: action.payload.boards,
       };
     case CLEAR_CURRENT_USER:
       return INITIAL_STATE;
@@ -33,7 +35,8 @@ export const setCurrentUser = (data) => ({
     firstName: data.firstName,
     lastName: data.lastName,
     email: data.email,
-    friends: data?.friends
+    friends: data?.friends,
+    boards: data?.boards,
   }
 });
 

@@ -11,7 +11,8 @@ export const getUser = async (req, res) => {
       firstName: user.firstName, 
       lastName: user.lastName,
       email: user.email,
-      friends: user?.friends
+      friends: user?.friends,
+      boards: user?.boards,
     })
   } catch (err) {
     console.error(err);
