@@ -67,4 +67,31 @@ export const getBoard = async (req, res) => {
   }
 }
 
+export const createPost = async (req, res) => {
+  try {
+    const {boardId, author, textDesc, imgUrl} = req.body;
+    const board = await Board.findOne({ _id: boardId });
+    if (!board)
+      return res.json({ errorMessage: 'Board not found.' });
+  let currentPosts = [...board.posts, {
+    author,
+    textDesc,
+    imgUrl,
+    createdAt: new Date(),
+  }]
+  const updatedBoard = await Board.findOneAndUpdate(
+    { _id: boardId }, 
+    {posts: currentPosts},
+    {
+      new: true,
+      upsert: true // Make this update into an upsert);
+    }
+  )
+  res.json(updatedBoard.posts);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send();
+  }
+}
+
 export default router;

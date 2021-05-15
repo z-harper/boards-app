@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 import * as S from './BoardPgCreatePost.styled';
 
-const BoardPgCreatePost = () => {
+const BoardPgCreatePost = ({boardId}) => {
   const [textDesc, setTextDesc] = useState('');
   const [fileInput, setFileInput] = useState({});
+  const user = useSelector(state => state.user);
 
   const uploadToS3 = async () => {
     try {
@@ -25,7 +27,12 @@ const BoardPgCreatePost = () => {
     try {
       const uploadUrl = await uploadToS3();
       // send board creation contents to board api
-      await axios.post('http://localhost:8080/boards/post', {textDesc, uploadUrl});
+      await axios.post('http://localhost:8080/boards/post', {
+        boardId,
+        textDesc, 
+        imgUrl: uploadUrl, 
+        author: user.email
+      });
       // redirect to homepage on successful creation of board
     } catch (err) {
       console.log(err);
