@@ -3,6 +3,7 @@ import axios from 'axios';
 import Navbar from '../components/Navbar';
 import BoardPgContent from '../components/BoardPgContent';
 import BoardPgPosts from '../components/BoardPgPosts';
+import BoardPgCreatePost from '../components/BoardPgCreatePost';
 
 const Board = (props) => {
   const [currentBoard, setCurrentBoard] = useState({});
@@ -32,11 +33,12 @@ const Board = (props) => {
   }
   
   return (
-    <div>
+    <>
       <Navbar fromLoc={'home-page'} />
       <BoardPgContent currentBoard={currentBoard} />
       <BoardPgPosts currentPosts={currentBoard.posts} />
-    </div>
+      <BoardPgCreatePost boardId={currentBoard._id}/>
+    </>
   )
 }
 

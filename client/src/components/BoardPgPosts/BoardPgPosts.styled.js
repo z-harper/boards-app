@@ -24,7 +24,7 @@ export const PostHeader = styled.header`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  margin-bottom: 8px;
 `;
 
 export const AuthorDetails = styled.div``;

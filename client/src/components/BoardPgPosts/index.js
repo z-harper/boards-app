@@ -30,7 +30,7 @@ const Post = ({post}) => {
   const postRef = useRef(null);
 
   const postSpring = useSpring({
-    from: { opacity: 0, height: 0},
+    from: {opacity: 0, height: 0},
     to: {
       opacity: showFullPost ? 1 : 0,
       height: showFullPost ? postHeight : 0
@@ -43,7 +43,7 @@ const Post = ({post}) => {
       for (const elem of postRef.current.children) {
         height += elem.offsetHeight;
       }
-      setPostHeight(post.textDesc ? height + 16 : height); // p margin-bottom 1rem by default
+      setPostHeight(height); // p margin-bottom 1rem by default
     }
     findDivHeight()
   }, [])
