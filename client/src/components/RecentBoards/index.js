@@ -1,33 +1,14 @@
+import { useSelector } from 'react-redux';
 import * as S from './RecentBoards.styled';
 
-const testBoards = [
-  {
-    id: 1,
-    name: 'Test Board 1',
-    boardAdded: new Date('2021-04-28'),
-    lastPost: new Date('2021-05-01'),
-  },
-  {
-    id: 2,
-    name: 'Board 2 - No post',
-    boardAdded: new Date('2021-04-29'),
-    lastPost: new Date(0),
-  },
-  {
-    id: 3,
-    name: 'Board 3 - most recent post',
-    boardAdded: new Date('2021-05-01'),
-    lastPost: new Date('2021-05-05'),
-  },
-  {
-    id: 4,
-    name: 'Board 4 - most recent add',
-    boardAdded: new Date('2021-05-04'),
-    lastPost: new Date('2021-05-04'),
-  }
-]
+const convertDate = (dt) => {
+  let date = new Date(Date.parse(dt));
+  return date.toLocaleDateString();
+}
 
 const RecentBoards = () => {
+  const currentUser = useSelector(state => state.user);
+
   return (
     <S.RecentBoards>
       <S.Wrapper>
@@ -36,16 +17,15 @@ const RecentBoards = () => {
           <S.MyBoardsLink to='/boards'>My Boards</S.MyBoardsLink>
         </S.TitleContainer>
         <S.BoardsContainer>
-          {testBoards
+          {currentUser.boards
             .slice()
-            .map(board => { return {...board, mostRecent: board.boardAdded > board.lastPost ? board.boardAdded : board.lastPost}})
-            .sort((a, b) => b.mostRecent - a.mostRecent)
+            .sort((a, b) => b.lastActive - a.lastActive)
             .slice(0, 6)
             .map(board => {
               return (
-                <S.BoardLink key={board.id} to={`/board/${board.id}`}>
-                  <S.BoardName>{board.name}</S.BoardName>
-                  <S.LastActive>{board.mostRecent.toLocaleDateString()}</S.LastActive>
+                <S.BoardLink key={board.boardId} to={`/board/${board.boardId}`}>
+                  <S.BoardName>{board.boardName}</S.BoardName>
+                  <S.LastActive>{convertDate(board.lastActive)}</S.LastActive>
                 </S.BoardLink>
               )
           })}
